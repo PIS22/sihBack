@@ -12,12 +12,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
 
 
 @SuppressWarnings("serial")
 @Entity
 @AllArgsConstructor @NoArgsConstructor @Data @ EqualsAndHashCode @ToString
-public class Site implements Serializable{
+public class Site  extends Audit<Utilisateur> implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

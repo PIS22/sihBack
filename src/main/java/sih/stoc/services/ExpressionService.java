@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import sih.stoc.entities.ExpressionBesoin;
 import sih.stoc.repositories.ExpressionRepo;
-import sih.stoc.repositories.LigneEBRepo;
 
 @Service
 public class ExpressionService {

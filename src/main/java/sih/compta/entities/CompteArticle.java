@@ -1,5 +1,6 @@
 package sih.compta.entities;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -13,11 +14,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import sih.securite.config.Audit;
 import sih.stoc.entities.Article;
 
 @Entity
-public class CompteArticle {
+public class CompteArticle extends Audit<String> implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7942205161479528927L;
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idComArt;
 	private Date debComArt;

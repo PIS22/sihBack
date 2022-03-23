@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import sih.stoc.entities.Caisse;
+import sih.facturation.entities.Caisse;
 
 @Entity
 public class CompteCaisse {

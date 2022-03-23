@@ -8,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import sih.securite.config.Audit;
+
 @SuppressWarnings("serial")
 @Entity
-public class ExpressionDetail implements Serializable{
+public class ExpressionDetail extends Audit<String> implements Serializable{
 	@Id
 	@GeneratedValue
 	private Long idLigEB;

@@ -1,25 +1,34 @@
 package sih.general.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
 
 @SuppressWarnings("serial")
 @Entity
 //@EntityListeners(AuditingEntityListener)
-public class Personne implements Serializable {
+public class Personne extends Audit<Utilisateur> implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idPers; 
 	private String nom;
 	private String pren;
-	private LocalDate dNais;
-	private LocalTime hNais;
+	private LocalDateTime dNais;
+	private String lNais;
 	private String Sexe;
 	private String profession;
 	private String sigPar;
@@ -27,20 +36,21 @@ public class Personne implements Serializable {
 	private String bp;
 	private String rue;
 	private String adresse;
-	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
+	@JoinTable(name = "relation")
+	private Set<Personne> liens= new HashSet<>();
 	public Personne() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Personne(Long idPers, String nom, String pren, LocalDate dNais, LocalTime hNais, String sexe,
+	public Personne(String nom, String pren, LocalDateTime dNais, String lNais, String sexe,
 			String profession, String sigPar, String tel, String bp, String rue, String adresse) {
 		super();
-		this.idPers = idPers;
 		this.nom = nom;
 		this.pren = pren;
 		this.dNais = dNais;
-		this.hNais = hNais;
+		this.lNais = lNais;
 		Sexe = sexe;
 		this.profession = profession;
 		this.sigPar = sigPar;
@@ -74,20 +84,20 @@ public class Personne implements Serializable {
 		this.pren = pren;
 	}
 
-	public LocalDate getdNais() {
+	public LocalDateTime getdNais() {
 		return dNais;
 	}
 
-	public void setdNais(LocalDate dNais) {
+	public void setdNais(LocalDateTime dNais) {
 		this.dNais = dNais;
 	}
 
-	public LocalTime gethNais() {
-		return hNais;
+	public String getlNais() {
+		return lNais;
 	}
 
-	public void sethNais(LocalTime hNais) {
-		this.hNais = hNais;
+	public void sethNais(String lNais) {
+		this.lNais = lNais;
 	}
 
 	public String getSexe() {

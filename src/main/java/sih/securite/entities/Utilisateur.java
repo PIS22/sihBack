@@ -1,21 +1,22 @@
 package sih.securite.entities;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
+
+import sih.general.entities.Personne;
 
 
 @SuppressWarnings("serial")
@@ -27,13 +28,14 @@ public class Utilisateur implements Serializable{
 	@Column(nullable = false, unique = true, updatable = true)
 	private String login;
 	private String shareCode;
-	//private String nom;
-	//private String prenom;
 	private String pass;
+	@OneToOne(cascade = {CascadeType.DETACH})
+	@JoinColumn(nullable = false)
+	private Personne pers;
 	private boolean enLigne;
 	@ManyToMany(fetch = FetchType.EAGER)
-	//@JoinTable(name = "RoleUser")
-	public Collection<AppRole> roles= new ArrayList<AppRole>();
+	@JoinTable(name = "RoleUtilisateur")
+	public List<AppRole> roles;
 	
 	
 	public Utilisateur() {
@@ -41,12 +43,12 @@ public class Utilisateur implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Utilisateur(String login, String pass) {
+
+	public Utilisateur(String login, String pass, Personne pers) {
 		super();
 		this.login = login;
-		//this.nom = nom;
-		//this.prenom = prenom;
 		this.pass = pass;
+		this.pers = pers;
 	}
 
 
@@ -54,91 +56,77 @@ public class Utilisateur implements Serializable{
 		return idUser;
 	}
 
+
 	public void setIdUser(Long idUser) {
 		this.idUser = idUser;
 	}
+
 
 	public String getLogin() {
 		return login;
 	}
 
+
 	public void setLogin(String login) {
 		this.login = login;
 	}
 
-/*	public String getNom() {
-		return nom;
-	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public String getPrenom() {
-		return prenom;
-	}
-
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}*/
-
-	@JsonIgnore
 	public String getShareCode() {
 		return shareCode;
 	}
 
-	@JsonSetter
+
 	public void setShareCode(String shareCode) {
 		this.shareCode = shareCode;
 	}
 
-	@JsonIgnore
+
 	public String getPass() {
 		return pass;
 	}
 
-	@JsonSetter
+
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
+
+
+	public Personne getPers() {
+		return pers;
+	}
+
+
+	public void setPers(Personne pers) {
+		this.pers = pers;
+	}
+
 
 	public boolean isEnLigne() {
 		return enLigne;
 	}
 
+
 	public void setEnLigne(boolean enLigne) {
 		this.enLigne = enLigne;
 	}
 
-	public Collection<AppRole> getRoles() {
+
+	public List<AppRole> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Collection<AppRole> roles) {
+
+	public void setRoles(List<AppRole> roles) {
 		this.roles = roles;
 	}
+
 
 	@Override
 	public String toString() {
 		return "Utilisateur [idUser=" + idUser + ", login=" + login + ", shareCode=" + shareCode + ", pass=" + pass
-				+ ", enLigne=" + enLigne+"]";
+				+ ", pers=" + pers + ", enLigne=" + enLigne + ", roles=" + roles + "]";
 	}
 
-	public String element() {
-		return idUser + ";" + shareCode + ";" +  login ;
-	}
-
-	public List<String> structure(){
-		List<String> ch= new ArrayList<>();
-		for(Field f: this.getClass().getFields()) {
-			ch.add(f.getName());
-		}
-		return ch;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj);
-	}
 
 }

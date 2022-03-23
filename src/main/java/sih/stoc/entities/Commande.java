@@ -1,7 +1,7 @@
 package sih.stoc.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,7 +19,7 @@ import sih.securite.config.Audit;
 public class Commande extends Audit<String> implements Serializable {
 	@Id
 	private String numCom;
-	private Date datCom;
+	private LocalDateTime datCom;
 	private int delLiv;
 	private boolean valide;
 	private boolean active;
@@ -36,7 +36,7 @@ public class Commande extends Audit<String> implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Commande(Date datCom, int delLiv, boolean valide, boolean active, Fournisseur frs, Exercice exo) {
+	public Commande(LocalDateTime datCom, int delLiv, boolean valide, boolean active, Fournisseur frs, Exercice exo) {
 		super();
 		this.datCom = datCom;
 		this.delLiv = delLiv;
@@ -54,11 +54,11 @@ public class Commande extends Audit<String> implements Serializable {
 		this.numCom = numCom;
 	}
 
-	public Date getDatCom() {
+	public LocalDateTime getDatCom() {
 		return datCom;
 	}
 
-	public void setDatCom(Date datCom) {
+	public void setDatCom(LocalDateTime datCom) {
 		this.datCom = datCom;
 	}
 

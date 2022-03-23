@@ -3,26 +3,27 @@ package sih.stoc.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import sih.securite.config.Audit;
+
 @Entity
-public class Stocker implements Serializable {
+public class Stocker extends Audit<String> implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue()
-	private Long idStk;
+	private String idStk;
 	private double stkInit;
 	private double priInit;
 	private double qteStk;
 	private double cump;
-	@ManyToOne(targetEntity = Article.class)
+	@ManyToOne(targetEntity = Article.class, cascade = CascadeType.ALL)
 	private Article article;
 	@ManyToOne(targetEntity = Magasin.class)
 	private Magasin mag;
@@ -35,7 +36,7 @@ public class Stocker implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Stocker(Long idStk, double qteStk, double cump, Article article, Magasin mag) {
+	public Stocker(String idStk, double qteStk, double cump, Article article, Magasin mag) {
 		super();
 		this.idStk = idStk;
 		this.qteStk = qteStk;
@@ -44,11 +45,11 @@ public class Stocker implements Serializable {
 		this.mag = mag;
 	}
 
-	public Long getIdStk() {
+	public String getIdStk() {
 		return idStk;
 	}
 
-	public void setIdStk(Long idStk) {
+	public void setIdStk(String idStk) {
 		this.idStk = idStk;
 	}
 

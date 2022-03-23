@@ -11,7 +11,7 @@ import sih.securite.config.Audit;
 
 @SuppressWarnings("serial")
 @Entity
-public class CommandeDet extends Audit<String> implements Serializable {
+public class CommandeDetail extends Audit<String> implements Serializable {
 	@Id
 	private String idComDet;
 	private double puCom;
@@ -26,12 +26,12 @@ public class CommandeDet extends Audit<String> implements Serializable {
 	@JoinColumn(nullable = false)
 	private Article art;
 	
-	public CommandeDet() {
+	public CommandeDetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public CommandeDet(double puCom, double qteCom, double tva, double remise, double qteLiv, Commande com,
+	public CommandeDetail(double puCom, double qteCom, double tva, double remise, double qteLiv, Commande com,
 			Article art) {
 		super();
 		this.puCom = puCom;

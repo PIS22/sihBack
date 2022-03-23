@@ -1,4 +1,4 @@
-package sih.compta.entities;
+package sih.facturation.entities;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -8,7 +8,6 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -19,9 +18,7 @@ import javax.persistence.Table;
 @Table(name = "ModePaiement")
 public class ModePaiement implements Serializable {
 	@Id
-	@GeneratedValue
-	Long idMod;
-	@Column(name = "codeModPay", length = 5)
+	@Column(name = "codeModPay", length = 2)
 	@PrimaryKeyJoinColumn(name = "ModPay_PK")
 	private String codeModPay;
 	@Column(name="libeModPay",nullable = false, length = 30, unique = true, updatable = true)
@@ -36,14 +33,6 @@ public class ModePaiement implements Serializable {
 		super();
 		this.codeModPay = codeModPay;
 		this.libeModPay = libeModPay;
-	}
-
-	public Long getIdMod() {
-		return idMod;
-	}
-
-	public void setIdMod(Long idMod) {
-		this.idMod = idMod;
 	}
 
 	public String getCodeModPay() {
@@ -68,7 +57,7 @@ public class ModePaiement implements Serializable {
 	}
 	
 	public String element() {
-		return idMod + "; " +codeModPay + "; " + libeModPay;
+		return codeModPay + "; " + libeModPay;
 	}
 
 	@Override

@@ -9,9 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
+
 @SuppressWarnings("serial")
 @Entity
-public class Departement implements Serializable{
+public class Departement  extends Audit<Utilisateur> implements Serializable{
 
 	@Id
 	private String codeDepartement;

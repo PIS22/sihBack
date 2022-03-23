@@ -5,9 +5,9 @@ import java.util.List;
 public class CommBlock {
 	
 	public Commande com;
-	public List<CommandeDet> lignes;
+	public List<CommandeDetail> lignes;
 	
-	public CommBlock(Commande com, List<CommandeDet> lignes) {
+	public CommBlock(Commande com, List<CommandeDetail> lignes) {
 		super();
 		this.com = com;
 		this.lignes = lignes;
@@ -21,11 +21,11 @@ public class CommBlock {
 		this.com = com;
 	}
 
-	public List<CommandeDet> getLignes() {
+	public List<CommandeDetail> getLignes() {
 		return lignes;
 	}
 
-	public void setLignes(List<CommandeDet> lignes) {
+	public void setLignes(List<CommandeDetail> lignes) {
 		this.lignes = lignes;
 	}
 	

@@ -37,13 +37,13 @@ public class ArticleService {
 			Article art= repo.save(elt);
 			if(art.isStockable()) {
 				for (Magasin m : mr.findAll()) {
-					Stocker s = new Stocker((long) 0, 0, 0, art, m);
-					if (mr.familleParMagasin(m.getCodMag()).contains(art.getFamilleArt().getCodFam())) {
-						s.setAutorise(true);
+					Stocker stk = new Stocker(m.getCodMag()+"_"+art.getCodArt(), 0, 0, art, m);
+					if (m.getFamilles().contains(art.getFamilleArt())) {
+						stk.setAutorise(true);
 					} else {
-						s.setAutorise(false);
+						stk.setAutorise(false);
 					}
-					sr.save(s);
+					sr.save(stk);
 				}
 			}
 			
@@ -52,44 +52,41 @@ public class ArticleService {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		
-		/*Article nouveau= repo.save(elt);
-		if(!nouveau.equals(null)) {
-			for(Magasin m: mr.findAll()) {
-				Stocker s= new Stocker((long) 0, 0, 0, nouveau, m);
-				if(mr.familleParMagasin(m.getIdMag()).contains(nouveau.getFamilleArt().getIdFam())) {
-					s.setAutorise(true);
-				}
-				else {
-					s.setAutorise(false);
-				}
-				sr.save(s);
-			}
-			Agir act=new Agir();
-			act.setNouvellesValeurs(nouveau.element());
-			act.setTable(orepo.findById("Article").get());
-			act.setUser(ure.findByLogin(u));
-			act.setAction("Ajout");
-			act.setDatActe(LocalDateTime.now());
-			aux.save(act);
-			return nouveau;
-		}
-		return null;*/
 	}
 		// Modification
 	public Article edit(Article elt) {
+		Article art= repo.save(elt);
 		
 		try {
-			Article art = repo.save(elt);
-			if(!art.equals(null)) {
-				for(Stocker s: sr.findByIdArt(art.getCodArt())) {
-					if(mr.familleParMagasin(s.getMag().getCodMag()).contains(art.getFamilleArt().getCodFam())) {
-						s.setAutorise(true);
+			if(!repo.save(art).equals(null)) {
+				if(art.isStockable()) {
+					for(Magasin m: mr.findAll()){
+						List<Stocker> stk=sr.findByMagArt(m.getCodMag(), art.getCodArt());
+						if(stk.size()==0) {
+							
+								Stocker st=new Stocker(m.getCodMag()+"_"+art.getCodArt(), 0, 0, art, m);
+								if(st.getMag().getFamilles().contains(st.getArticle().getFamilleArt())) {
+									st.setAutorise(true);
+								}
+								else {
+									st.setAutorise(false);
+								}
+								sr.save(st);
+						}
+						else {
+							if(m.getFamilles().contains(art.getFamilleArt())) {
+								stk.forEach(s->{
+									s.setAutorise(true);
+								});
+							}
+							else {
+								stk.forEach(s->{
+									s.setAutorise(false);
+								});
+							}
+							sr.saveAll(stk);
+						}
 					}
-					else {
-						s.setAutorise(false);
-					}
-					sr.save(s);
 				}
 			}
 			return art;
@@ -98,45 +95,11 @@ public class ArticleService {
 			return null;
 		}
 		
-		/*Article ancien=repo.findById(elt.getIdArt()).get();
-		Article nouveau= repo.save(elt);
-		if(!nouveau.equals(null)) {
-			for(Stocker s: sr.findByIdArt(nouveau.getIdArt())) {
-				if(mr.familleParMagasin(s.getMag().getIdMag()).contains(nouveau.getFamilleArt().getIdFam())) {
-					s.setAutorise(true);
-				}
-				else {
-					s.setAutorise(false);
-				}
-				sr.save(s);
-			}
-			Agir act=new Agir();
-			act.setAnciennesValeurs(ancien.element());
-			act.setNouvellesValeurs(nouveau.element());
-			act.setTable(orepo.findById("Article").get());
-			act.setUser(ure.findByLogin(us));
-			act.setAction("Modification");
-			act.setDatActe(LocalDateTime.now());
-			aux.save(act);
-			return nouveau;
-		}
-		return null;*/
+	
 	}
 	
 	public void delete(Article elt) {
-		/*Article ancien=repo.findById(id).get();
-		if(!ancien.equals(null)) {
-			repo.deleteById(id);
-			if(!repo.existsById(id)) {
-				Agir act=new Agir();
-				act.setAnciennesValeurs(ancien.element());
-				act.setTable(orepo.findById("Article").get());
-				act.setUser(us);
-				act.setAction("Supression");
-				act.setDatActe(LocalDateTime.now());
-				aux.save(act);
-			}
-		}*/
+		
 		try {
 			 repo.delete(elt);
 		} catch (Exception e) {
@@ -163,8 +126,12 @@ public class ArticleService {
 		
 	}
 
-	public List<Article> listAchetable(boolean val){
-		return repo.achetable(val);
+	public List<Article> listAchetable(){
+		return repo.achetables();
+	}
+
+	public List<Article> listAchetableMag(String Mag){
+		return repo.achetablesParMag(Mag);
 	}
 
 	public List<Article> listVendable(boolean val){

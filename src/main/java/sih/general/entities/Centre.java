@@ -16,9 +16,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
+
 @SuppressWarnings("serial")
 @Entity
-public class Centre implements Serializable {
+public class Centre extends Audit<Utilisateur> implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

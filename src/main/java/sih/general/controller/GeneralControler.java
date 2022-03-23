@@ -19,7 +19,6 @@ import sih.general.entities.CommuneBlock;
 import sih.general.entities.DDS;
 import sih.general.entities.DDSBlock;
 import sih.general.entities.Exercice;
-import sih.general.entities.ExerciceBlock;
 import sih.general.entities.PharmaBlock;
 import sih.general.entities.Pharmacie;
 import sih.general.entities.ServeBlock;
@@ -77,26 +76,20 @@ public class GeneralControler {
 	public List<Exercice> findExerciceByEtat(@PathVariable(name = "eta") String eta) {
 		return exo.findByEtat(eta);
 	}
-
-	
-	@GetMapping("exercice/byEtat/{id}")
-	public List<Exercice> findByEta(@PathVariable(name = "id") String id) {
-		return exo.findByEtat(id);
-	}
 	
 	@PostMapping("exercice/list")
-	Exercice addingExercice(@RequestBody ExerciceBlock e){
-		return exo.insert(e.getExo(), e.getAuteur());
+	Exercice addingExercice(@RequestBody Exercice e){
+		return exo.insert(e);
 	}
 	
 	@PutMapping("exercice/list")
-	public Exercice editingExercice(@RequestBody ExerciceBlock bloc) {
-		return exo.edit(bloc.getExo(), bloc.getAuteur());
+	public Exercice editingExercice(@RequestBody Exercice bloc) {
+		return exo.edit(bloc);
 	}
 	
 	@DeleteMapping("exercice/byId/{id}")
-	public boolean deletingExercice( @PathVariable(name = "id") int id) {
-		return exo.delete(id);
+	public void deletingExercice( @PathVariable(name = "id") int id) {
+		exo.delete(id);
 	}
 	
 	//**************** Interaction sur l'entity DDS **********//

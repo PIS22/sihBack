@@ -35,11 +35,11 @@ public class MagasinService {
 		try {
 			Magasin mg = repo.save(elt);
 			if (!mg.equals(null)) {
-					for( Article a: ar.findAll()) {
+				try {
+					List<Article> articles=ar.findAll();
+					for( Article a:articles ) {
 						if(a.isStockable()) {
-							Stocker stk = new Stocker();
-							stk.setArticle(a);
-							stk.setMag(mg);
+							Stocker stk = new Stocker(mg.getCodMag()+"_"+a.getCodArt(), 0, 0, a, mg);
 							if (repo.familleParMagasin(mg.getCodMag()).contains(a.getFamilleArt().getCodFam())) {
 								stk.setAutorise(true);
 							} else {
@@ -49,40 +49,16 @@ public class MagasinService {
 						}
 						
 					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 			}
 			return mg;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		/*
-		Magasin nouveau = repo.save(elt);
-		if (!nouveau.equals(null)) {
-				for( Article a: ar.findAll()) {
-					Stocker stk= new Stocker();
-					stk.setArticle(a);
-					stk.setMag(nouveau);
-					if(repo.familleParMagasin(nouveau.getIdMag()).contains(a.getFamilleArt().getIdFam())) {
-						stk.setAutorise(true);
-					}
-					else {
-						stk.setAutorise(false);
-					}
-					sr.save(stk);
-				}
-			Agir act = new Agir();
-			act.setNouvellesValeurs(nouveau.toString());
-			act.setTable(orepo.findById("Magasin").get());
-			act.setUser(us.findByLogin(u));
-			act.setDatActe(LocalDateTime.now());
-			act.setAction("Ajout");
-			aux.save(act);
-			return nouveau;
-		}
-			else {
-				return null;
-			}*/
-	}
+			}
 
 	// Modification
 	public Magasin edit(Magasin elt) {
@@ -107,30 +83,6 @@ public class MagasinService {
 		System.out.println(e.getMessage());
 		return null;
 	}
-	
-		/*Magasin ancien = repo.findById(elt.getIdMag()).get();
-		Magasin nouveau = repo.save(elt);
-		if (!nouveau.equals(null)) {
-			for(Stocker s: sr.findByIdMag(nouveau.getIdMag())) {
-				if(repo.familleParMagasin(s.getMag().getIdMag()).contains(s.getArticle().getFamilleArt().getIdFam())){
-					s.setAutorise(true);
-				}
-				else {
-					s.setAutorise(false);
-				}
-				sr.save(s);
-			}
-			Agir act = new Agir();
-			act.setAnciennesValeurs(ancien.toString());
-			act.setNouvellesValeurs(nouveau.toString());
-			act.setTable(orepo.findById("Magasin").get());
-			act.setUser(us.findByLogin(u));
-			act.setDatActe(LocalDateTime.now());
-			act.setAction("Modification");
-			aux.save(act);
-			return nouveau;
-		}
-		return null;*/
 	}
 
 	public void delete(String id) {
@@ -143,16 +95,7 @@ public class MagasinService {
 			repo.delete(mg);
 		} catch (Exception e) {System.out.print(e.getMessage());
 		}
-		/*repo.deleteById(mg.getIdMag());
-		if (!repo.existsById(mg.getIdMag())) {
-			Agir act = new Agir();
-			act.setAnciennesValeurs(mg.toString());
-			act.setTable(orepo.findById("Magasin").get());
-			act.setUser(us.findByLogin(u));
-			act.setAction("Supression");
-			act.setDatActe(LocalDateTime.now());
-			aux.save(act);
-		}*/
+		
 	}
 
 	public List<Magasin> list() {
@@ -174,5 +117,22 @@ public class MagasinService {
 	public Magasin select(String cod) {
 		return repo.findByCodMag(cod);
 	}
+
+
+	public List<Stocker> etatMag(String cmag){
+		return sr.findByIdMag(cmag);
+	}
+	
+	public List<Stocker> dispoArticle(String cart){
+		return sr.findByIdArt(cart);
+	}
+	public List<Stocker> dispoArtMag(String cmag, String cart){
+		return sr.findByMagArt(cmag, cart);
+	}
+	
+	public List<Stocker> listStocker(){
+		return sr.findAll();
+	}
+
 
 }

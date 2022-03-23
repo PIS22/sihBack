@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
 
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
@@ -20,7 +22,7 @@ import javax.persistence.FetchType;
 
 @SuppressWarnings("serial")
 @Entity
-public class Commune implements Serializable {
+public class Commune extends Audit<Utilisateur> implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idCom;

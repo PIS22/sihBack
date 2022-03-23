@@ -13,10 +13,13 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
+
 @SuppressWarnings("serial")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Arrondissement implements Serializable {
+public class Arrondissement extends Audit<Utilisateur> implements Serializable {
 
     @OneToMany(mappedBy = "arrondissement")
     private List<Quartier> quartiers;

@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sih.stoc.entities.Article;
+import sih.stoc.entities.Client;
 import sih.stoc.entities.Famille;
 import sih.stoc.entities.Fournisseur;
 import sih.stoc.entities.Magasin;
+import sih.stoc.entities.Stocker;
 import sih.stoc.entities.Unite;
 import sih.stoc.services.ArticleService;
+import sih.stoc.services.ClientService;
 import sih.stoc.services.FamilleService;
 import sih.stoc.services.FournisseurService;
 import sih.stoc.services.MagasinService;
@@ -32,6 +35,8 @@ import sih.stoc.services.UniteService;
 public class StocBaseController {
 	@Autowired
 	private MagasinService mag;
+	@Autowired
+	private ClientService clt;
 	@Autowired
 	private UniteService unit;
 
@@ -66,7 +71,7 @@ public class StocBaseController {
 	}
 
 	@PutMapping("famille/list")
-	public Famille editingFamille(@RequestBody Famille fam) {
+	Famille editingFamille(@RequestBody Famille fam) {
 		return this.familleService.edit(fam);
 	}
 
@@ -98,21 +103,26 @@ public class StocBaseController {
 		return this.fournisseurService.insert(fourn);
 	}
 
-	@PutMapping("fournisseur/list")
-	public Fournisseur editingFournisseur(@RequestBody Fournisseur fourn) {
-		return this.fournisseurService.edit(fourn);
+	@PutMapping("fournisseur/list/{cod}")
+	public Fournisseur editingFournisseur(@PathVariable(name = "cod")String cod, @RequestBody Fournisseur fourn) {
+		return this.fournisseurService.edit(cod, fourn);
 	}
 
-	@DeleteMapping("fournisseur/list")
-	public void deletingFournisseur(@RequestBody Fournisseur frs) {
-		this.fournisseurService.delete(frs);
+	@DeleteMapping("fournisseur/list/{cod}")
+	public void deletingFournisseur(@PathVariable(name = "cod") String cod) {
+		this.fournisseurService.delete(cod);
 	}
 
 	// ---ControllerArticle
 
-	@GetMapping(path = "article/achetable/{val}/list")
-	public List<Article> listAchetable(@PathVariable boolean val) {
-		return this.ArticleService.listAchetable(val);
+	@GetMapping(path = "article/achetable/list")
+	public List<Article> listAchetable() {
+		return this.ArticleService.listAchetable();
+	}
+
+	@GetMapping(path = "article/achetable/{mag}/list")
+	public List<Article> listAchetableParMag(@PathVariable String mag) {
+		return this.ArticleService.listAchetableMag(mag);
 	}
 
 	@GetMapping(path = "article/consommable/list")
@@ -219,4 +229,53 @@ public class StocBaseController {
 		this.unit.deleteById(id);
 	}
 
+	// ---Controller Client
+
+	@GetMapping(path = "client/list")
+	public List<Client> listClient() {
+		return this.clt.list();
+	}
+
+	@GetMapping(path = "client/byId/{id}")
+	public Client findClien(@PathVariable(name = "id") Long id) {
+		return this.clt.select(id);
+	}
+
+	@GetMapping(path = "client/byCod/{cod}")
+	public Client findClientByCod(@PathVariable(name = "cod") Long cod) {
+		return this.clt.select(cod);
+	}
+
+	@PostMapping("client/list")
+	public Client addingClient(@RequestBody Client art) {
+		return this.clt.insert(art);
+	}
+
+	@PutMapping("client/list")
+	public Client editingClient(@RequestBody Client art) {
+		return this.clt.edit(art);
+	}
+
+	@DeleteMapping("client/byId/{id}")
+	public void deletingClient(@PathVariable Long id) {
+		this.clt.delete(id);
+	}
+	
+		
+	/////////////Stockage
+	@GetMapping("stock/article/{art}")
+	public List<Stocker> disponibiteArticle(@PathVariable String art){
+		return mag.dispoArticle(art);
+	}
+
+	@GetMapping("stock/magasin/{cmag}")
+	public List<Stocker> disponibiteMagasin(@PathVariable String cmag){
+		return mag.etatMag(cmag);
+	}
+
+	@GetMapping("stock/list")
+	public List<Stocker> listStock(){
+		return mag.listStocker();
+	}
+	
 }

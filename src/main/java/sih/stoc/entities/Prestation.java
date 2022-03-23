@@ -6,9 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import sih.securite.config.Audit;
+
 @SuppressWarnings("serial")
 @Entity
-public class Prestation implements Serializable{
+public class Prestation extends Audit<Prestation> implements Serializable{
 	@Id
 	@Column(unique = false, nullable = false, updatable = true, length = 10)
 	private String codPrest;

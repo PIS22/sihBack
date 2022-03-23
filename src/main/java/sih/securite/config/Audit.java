@@ -3,6 +3,7 @@ package sih.securite.config;
 import java.time.LocalDateTime;
 
 import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Audit<U> {
 	
@@ -20,34 +22,40 @@ public abstract class Audit<U> {
 	
 	@LastModifiedDate
 	protected LocalDateTime modifieLe;
+	
 	@LastModifiedBy
 	protected String editeur;
+
 	public LocalDateTime getCreeLe() {
 		return creeLe;
 	}
+
 	public void setCreeLe(LocalDateTime creeLe) {
 		this.creeLe = creeLe;
 	}
+
 	public String getCreateur() {
 		return createur;
 	}
+
 	public void setCreateur(String createur) {
 		this.createur = createur;
 	}
+
 	public LocalDateTime getModifieLe() {
 		return modifieLe;
 	}
+
 	public void setModifieLe(LocalDateTime modifieLe) {
 		this.modifieLe = modifieLe;
 	}
+
 	public String getEditeur() {
 		return editeur;
 	}
+
 	public void setEditeur(String editeur) {
 		this.editeur = editeur;
 	}
-	
-	
-	
 	
 }

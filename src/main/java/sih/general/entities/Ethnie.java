@@ -10,10 +10,13 @@ import javax.persistence.Id;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
+
 @SuppressWarnings("serial")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Ethnie implements Serializable{
+public class Ethnie extends Audit<Utilisateur> implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

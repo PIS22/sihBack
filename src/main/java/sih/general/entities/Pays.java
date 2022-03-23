@@ -5,9 +5,12 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
+
 @SuppressWarnings("serial")
 @Entity
-public class Pays implements Serializable{
+public class Pays extends Audit<Utilisateur> implements Serializable{
 
 	@Id
 	private String codePays;

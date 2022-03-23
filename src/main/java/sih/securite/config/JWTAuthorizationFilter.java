@@ -24,7 +24,15 @@ import sih.securite.repositories.UtilisateurRepo;
 public class JWTAuthorizationFilter extends OncePerRequestFilter{
 	@Autowired
 	public UtilisateurRepo us;
-
+	/*
+	public Utilisateur findUser(HttpServletRequest req) {
+		String jwt = req.getHeader(SecurityConstants.Header);
+		Claims claim = Jwts.parser().setSigningKey(SecurityConstants.monSecret)
+				.parseClaimsJws(jwt.replaceAll(SecurityConstants.prefix, "")).getBody();
+		String login = claim.getSubject();
+		return us.findByLogin(login);
+	}
+*/
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -66,7 +74,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter{
 		}
 
 	}
-	
-	
+
 
 }

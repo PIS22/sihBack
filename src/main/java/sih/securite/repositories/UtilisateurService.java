@@ -37,13 +37,14 @@ public class UtilisateurService {
 	private RoleRepo rrepo;
 
 	public Utilisateur insertUser(Utilisateur elt) {
-		if (repo.findByLogin(elt.getLogin()) != null)
-			throw new RuntimeException("Le login choisi existe déja");
-		Utilisateur use = new Utilisateur();
-		use.setPass(bcryptPass.encode(elt.getPass()));
-		use.setLogin(elt.getLogin());
-		Utilisateur nouveau = repo.save(use);
-		return nouveau;
+		if (repo.findByLogin(elt.getLogin()) == null) {
+			elt.setPass(bcryptPass.encode(elt.getPass()));
+			return repo.save(elt);
+		} else {
+			System.out.print("Le login choisi existe déja");
+			return null;
+		}
+
 	}
 
 	public Utilisateur register(Utilisateur us) {
@@ -53,42 +54,14 @@ public class UtilisateurService {
 		return repo.save(us);
 	}
 
-	public Utilisateur editUser(Utilisateur elt, Utilisateur us) {
-		elt.setPass(bcryptPass.encode(elt.getPass()));
-		Utilisateur ancien = repo.findById(elt.getIdUser()).get();
-		Utilisateur nouveau = repo.save(elt);
-		if (!nouveau.equals(null)) {
-			try {
-				Agir act = new Agir();
-				act.setAnciennesValeurs(ancien.element());
-				act.setNouvellesValeurs(nouveau.element());
-				act.setDatActe(LocalDateTime.now());
-				act.setTable(orepo.findById("Utilisateur").get());
-				act.setUser(us);
-				act.setAction("Modification");
-				aux.save(act);
-				return nouveau;
-			} catch (Exception e) {
-				System.out.print(e.getMessage());
-				return null;
-			}
-		}
-		return null;
+	public Utilisateur editUser(Utilisateur elt) {
+		return repo.save(elt);
 	}
 
 	public void deleteUser(Long id, Utilisateur us) {
 		Utilisateur ancien = repo.findById(id).get();
 		if (!ancien.equals(null)) {
 			repo.deleteById(id);
-			if (!repo.existsById(id)) {
-				Agir act = new Agir();
-				act.setAnciennesValeurs(ancien.element());
-				act.setDatActe(LocalDateTime.now());
-				act.setTable(orepo.findById("Utilisateur").get());
-				act.setUser(us);
-				act.setAction("Supression");
-				aux.save(act);
-			}
 		}
 	}
 
@@ -103,7 +76,7 @@ public class UtilisateurService {
 	public Utilisateur findByLogin(String login) {
 		return repo.findByLogin(login);
 	}
-	
+
 	public void affectRoleToUser(Utilisateur us, AppRole role) {
 		us.getRoles().add(role);
 	}
@@ -116,7 +89,7 @@ public class UtilisateurService {
 			System.out.print(e.getMessage());
 			return null;
 		}
-		
+
 	}
 
 	public AppRole editRole(AppRole elt) {
@@ -139,6 +112,7 @@ public class UtilisateurService {
 	public AppRole findByNomRole(String nomRole) {
 		return rrepo.findByNomRole(nomRole);
 	}
+
 ///////////////Gestion des groupes utilisateur
 	public UserGroup insertUserGroup(UserGroup elt, Utilisateur us) {
 		UserGroup nouveau = ugRepo.save(elt);
@@ -259,7 +233,7 @@ public class UtilisateurService {
 	public Objet findObjet(String lib) {
 		return orepo.findById(lib).get();
 	}
-	
+
 	//// Recherche d'un éément suivant son identifiant
 	public Groupe selectGroup(int id) {
 		return gRepo.findById(id).get();

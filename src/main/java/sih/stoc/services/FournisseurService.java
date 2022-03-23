@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import sih.securite.entities.Utilisateur;
 import sih.stoc.entities.Fournisseur;
 import sih.stoc.repositories.FournisseurRepo;
 
@@ -18,39 +17,6 @@ public class FournisseurService {
 	}
 	
 	public Fournisseur insert(Fournisseur elt) {
-		/*Fournisseur nouveau= repo.save(elt);
-		if(!nouveau.equals(null)) {
-			Agir act=new Agir();
-			act.setNouvellesValeurs(nouveau.element());
-			act.setTable(orepo.findById("Fournisseur").get());
-			act.setUser(us);
-			act.setAction("Ajout");
-			aux.save(act);
-			return nouveau;
-		}
-		return null;*/
-		try {
-			return repo.save(elt);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
-	}
-		// Modification
-	public Fournisseur edit(Fournisseur elt) {
-		/*Fournisseur ancien=repo.findById(elt.getIdFour()).get();
-		Fournisseur nouveau= repo.save(elt);
-		if(!nouveau.equals(null)) {
-			Agir act=new Agir();
-			act.setAnciennesValeurs(ancien.element());
-			act.setNouvellesValeurs(nouveau.element());
-			act.setTable(orepo.findById("Fournisseur").get());
-			act.setUser(us);
-			act.setAction("Modification");
-			aux.save(act);
-			return nouveau;
-		}
-		return null;*/
 		try {
 			return repo.save(elt);
 		} catch (Exception e) {
@@ -59,23 +25,16 @@ public class FournisseurService {
 		}
 	}
 	
-	public void delete(Long id,Utilisateur us) {
-		/*Fournisseur ancien=repo.findById(id).get();
-		if(!ancien.equals(null)) {
-			repo.deleteById(id);
-			if(!repo.existsById(id)) {
-				Agir act=new Agir();
-				act.setAnciennesValeurs(ancien.element());
-				act.setTable(orepo.findById("Fournisseur").get());
-				act.setUser(us);
-				act.setAction("Supression");
-				aux.save(act);
-			}
-		}*/
+		// Modification
+	public Fournisseur edit(String cod, Fournisseur elt) {
+		Fournisseur ancien=repo.findById(cod).get();
+		ancien.setCodFour(elt.getCodFour());
+		ancien.setLibFour(elt.getLibFour());
 		try {
-			
+			return repo.save(ancien);
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println(e.getMessage());
+			return null;
 		}
 	}
 	
@@ -83,9 +42,9 @@ public class FournisseurService {
 		return repo.findAll();
 	}
 	
-	public void delete(Fournisseur frs) {
+	public void delete(String cod) {
 		try {
-			repo.delete(frs);
+			repo.deleteById(cod);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

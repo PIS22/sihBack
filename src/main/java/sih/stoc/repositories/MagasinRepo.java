@@ -13,10 +13,10 @@ public interface MagasinRepo extends JpaRepository<Magasin, String>{
 	
 	public Magasin findByCodMag(String codMag);
 	
-	@Query(value = "SELECT familles_id_fam FROM familles_autorisees WHERE magasin_id_mag = ? ", nativeQuery = true)
-	public List<Long> familleParMagasin(String mag);
+	@Query(value = "SELECT familles_cod_fam FROM familles_autorisees WHERE magasin_cod_mag = ? ", nativeQuery = true)
+	public List<String> familleParMagasin(String mag);
 	
-	@Query(value = "SELECT * FROM stocker WHERE magasin_id_mag = ? ", nativeQuery = true)
-	public List<Long> stockParMagasin(Long mag);
+	@Query(value = "SELECT * FROM stocker WHERE magasin_cod_mag = ? ", nativeQuery = true)
+	public List<Long> stockParMagasin(String mag);
 	
 }

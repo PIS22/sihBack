@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
+
 import javax.persistence.EntityListeners;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -13,7 +17,7 @@ import javax.persistence.Transient;
 @SuppressWarnings("serial")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Quartier implements Serializable {
+public class Quartier extends Audit<Utilisateur> implements Serializable {
     
     @Id
     private String id;

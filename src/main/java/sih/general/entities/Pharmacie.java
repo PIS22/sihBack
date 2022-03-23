@@ -10,12 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
+
 import java.io.Serializable;
 
 
 @SuppressWarnings("serial")
 @Entity
-public class Pharmacie implements Serializable {
+public class Pharmacie extends Audit<Utilisateur> implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idPharma;

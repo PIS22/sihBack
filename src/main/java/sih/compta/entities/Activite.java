@@ -11,10 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import sih.securite.config.Audit;
+
 
 @SuppressWarnings("serial")
 @Entity
-public class Activite implements Serializable {
+public class Activite extends Audit<String> implements Serializable {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idAct;

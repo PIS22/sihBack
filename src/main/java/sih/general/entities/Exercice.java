@@ -5,9 +5,15 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
 @SuppressWarnings("serial")
 @Entity
-public class Exercice implements Serializable {
+@EnableJpaAuditing
+public class Exercice extends Audit<Utilisateur> implements Serializable {
 	@Id
 	private int codExo;
 	private String libExo;

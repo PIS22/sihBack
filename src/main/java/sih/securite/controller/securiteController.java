@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import sih.securite.entities.AppRole;
 import sih.securite.entities.Disposer;
@@ -24,6 +25,7 @@ import sih.securite.entities.UtilisateurBlock;
 import sih.securite.repositories.UtilisateurService;
 import sih.securite.services.DisposerService;
 
+@RestController
 @CrossOrigin
 @RequestMapping("/")
 public class securiteController {
@@ -39,12 +41,12 @@ public Utilisateur connexion(@RequestBody Utilisateur u){
 	//System.out.print("Tentative de connexion");
 	return use.findByLogin(u.getLogin());
 }
-@GetMapping("securite/us/list")
+@GetMapping("utilis/list")
 public List<Utilisateur> listUser(){
 	return use.listUser();
 }
 
-@GetMapping("securite/us/byId/{id}")
+@GetMapping("utilis/byId/{id}")
 public Utilisateur findUser(@PathVariable(name = "id") Long id) {
 	return use.selectUser(id);
 }
@@ -59,65 +61,65 @@ Utilisateur addingUser(@RequestBody Utilisateur us){
 	return use.register(nUser);
 }
 
-@PutMapping("securite/us/list")
-public Utilisateur editingUser(@RequestBody UtilisateurBlock us) {
-	return use.editUser(us.getUser(), us.getAuteur());
+@PutMapping("utilis/list")
+public Utilisateur editingUser(@RequestBody Utilisateur us) {
+	return use.editUser(us);
 }
 
-@DeleteMapping("securite/us/list")
+@DeleteMapping("utilis/list")
 public void deletingUser(UtilisateurBlock us) {
 	use.deleteUser(us.getUser().getIdUser(), us.getAuteur());
 }
 
 
 /////////Interaction sur le groupes
-@GetMapping("securite/gpe/list")
+@GetMapping("groupe/list")
 public List<Groupe> listGroupe(){
 	return use.listGroup();
 }
 
-@GetMapping("securite/gpe/byId/{id}")
+@GetMapping("groupe/byId/{id}")
 public Groupe findGroupe(@PathVariable(name = "id") int id) {
 	return use.selectGroup(id);
 }
 
-@PostMapping("securite/gpe/list")
+@PostMapping("groupe/list")
 Groupe addingGroupe(@RequestBody GroupeBlock bloc){
 	return use.insertGroup(bloc.getGpe(), bloc.getAuteur());
 }
 
-@PutMapping("securite/gpe/list")
+@PutMapping("groupe/list")
 public Groupe editingGroupe(@RequestBody GroupeBlock bloc) {
 	return use.editGroup(bloc.getGpe(), bloc.getAuteur());
 }
 
-@DeleteMapping("securite/gpe/list")
+@DeleteMapping("groupe/list")
 public void deletingGroupe(GroupeBlock bloc) {
 	use.deleteGroup(bloc.getGpe().getIdGpe(), bloc.getAuteur());
 }
 
 //////////////Interaction sur le groupes
-@GetMapping("securite/role/list")
+@GetMapping("role/list")
 public List<AppRole> listRole(){
 return use.listRole();
 }
 
-@GetMapping("securite/role/byId/{id}")
+@GetMapping("role/byId/{id}")
 public AppRole findRole(@PathVariable(name = "id") int id) {
 return use.selectRole(id);
 }
 
-@PostMapping("securite/role/list")
+@PostMapping("role/list")
 AppRole addingRole(@RequestBody AppRole elt){
 return use.insertRole(elt);
 }
 
-@PutMapping("securite/role/list")
+@PutMapping("role/list")
 public AppRole editingAppRole(@RequestBody AppRole elt) {
 return use.editRole(elt);
 }
 
-@DeleteMapping("securite/role/list")
+@DeleteMapping("role/list")
 public void deletingRole(int id) {
 use.deleteRole(id);
 }

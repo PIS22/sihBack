@@ -11,11 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import sih.general.entities.Exercice;
+import sih.securite.config.Audit;
 import sih.securite.entities.Utilisateur;
 
 @SuppressWarnings("serial")
 @Entity
-public class ExpressionBesoin implements Serializable{
+public class ExpressionBesoin extends Audit<String> implements Serializable{
 	@Id
 	private String numEB;
 	@Column(nullable = false, updatable = true)

@@ -7,9 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import sih.securite.config.Audit;
+import sih.securite.entities.Utilisateur;
+
 @SuppressWarnings("serial")
 @Entity
-public class TypeCentre implements Serializable {
+public class TypeCentre extends Audit<Utilisateur> implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
